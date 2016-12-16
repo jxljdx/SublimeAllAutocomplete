@@ -29,9 +29,11 @@ class AllAutocomplete(sublime_plugin.EventListener):
 
         for v in views:
             if len(locations) > 0 and v.id == view.id:
-                view_words = v.extract_completions(prefix, locations[0])
+                view_words = v.extract_completions(prefix.lower(), locations[0])
+                view_words += v.extract_completions(prefix.upper(), locations[0])
             else:
-                view_words = v.extract_completions(prefix)
+                view_words = v.extract_completions(prefix.lower())
+                view_words += v.extract_completions(prefix.upper())
             view_words = filter_words(view_words)
             view_words = fix_truncation(v, view_words)
             words += [(w, v) for w in view_words]
